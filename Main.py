@@ -14,8 +14,32 @@ class Authentication:
             with open("E:\GitDemo\Smart_College_Management_System\Admin.txt", "a") as f:
                 f.write(self.info)
                 print("Signup Successfully.")
-                self.choice = input("1. Add Student\n2.Remove Student\n3. Add Teacher\n4. Create Course\n5. View Reports\n6. Lougout\nEnter choice :")
-                self.ad = Admin(self.choice)
+                self.ad = Admin()
+                self.choice = input("1. Add Student\n2. Add Teacher\n3. Lougout\nEnter choice :")
+                
+                if (self.choice == "1"):
+                    id = input("Enter Student ID :")
+                    nme = input("Enter Student Name :")
+                    age = input("Enter Student Age :")
+                    emal = input("Enter Student Email :")
+                    phone = input("Enter Student Phone :")
+                    course = input("Enter Student Course :")
+                    self.ad.add_student(id,nme, age, emal, phone, course)
+
+                elif (self.choice == "2"):
+                    id = input("Enter Teacher ID :")
+                    nme = input("Enter Teacher Name :")
+                    subject = input("Enter Subject :")
+                    salary = input("Enter Salary :")
+                    self.ad.add_teacher(id, nme, subject, salary)
+
+                elif (choice == "3"):
+                    print("Lougout Successfully.")
+                    print("Exit!")
+
+                else:
+                    print("You entered an invalid option.")
+
 
         elif (role == "Teacher"):
             self.info.update({"Role" : role})
@@ -23,7 +47,7 @@ class Authentication:
             with open("E:\GitDemo\Smart_College_Management_System\Teacher.txt", "a") as f:
                 f.write(self.info)
                 print("Signup Successfully.")
-                self.choice = input("1. Mark Attendance\n2. Add Marks\n3.View Students\n4. Lougout\nEnter Choice :")
+                self.choice = input("1. Add Marks\n2.View Students\n3. Lougout\nEnter Choice :")
                 self.teach = Teacher(self.choice)
 
         elif (role == "Student"):
@@ -44,8 +68,32 @@ class Authentication:
                 if email in self.data:
                     if password in self.data:
                         print("Login Successfully.")
-                        self.choice = input("1. Add Student\n2.Remove Student\n3. Add Teacher\n4. Create Course\n5. View Reports\n6. Lougout\nEnter choice :")
-                        self.ad = Admin(self.choice)
+                        self.ad = Admin()
+                        self.choice = input("1. Add Student\n2. Add Teacher\n3. Lougout\nEnter choice :")
+                        
+                        if (self.choice == "1"):
+                            id = input("Enter Student ID :")
+                            name = input("Enter Student Name :")
+                            age = input("Enter Student Age :")
+                            emal = input("Enter Student Email :")
+                            phone = input("Enter Student Phone :")
+                            course = input("Enter Student Course :")
+                            self.ad.add_student(id,name, age, emal, phone, course)
+
+                        elif (self.choice == "2"):
+                            id = input("Enter Teacher ID :")
+                            name = input("Enter Teacher Name :")
+                            subject = input("Enter Subject :")
+                            salary = input("Enter Salary :")
+                            self.ad.add_teacher(id, name, subject, salary)
+
+                        elif (choice == "3"):
+                            print("Lougout Successfully.")
+                            print("Exit!")
+
+                        else:
+                            print("You entered an invalid option.")
+                    
                     else:
                         print("Invalid user name or password.")
                 else:
@@ -57,7 +105,7 @@ class Authentication:
                 if email in self.data:
                     if password in self.data:
                         print("Login Successfully.")
-                        self.choice = input("1. Mark Attendance\n2. Add Marks\n3.View Students\n4. Lougout\nEnter Choice :")
+                        self.choice = input("1. Add Marks\n2.View Students\n3. Lougout\nEnter Choice :")
                         self.teach = Teacher(self.choice)
                     else:
                         print("Invalid user name or password.")
@@ -79,8 +127,40 @@ class Authentication:
 
 
 class Admin(Authentication):
-    def __init__(self, choice):
-        self.choice = choice
+    def __init__(self):
+        pass
+
+    def add_student(self, ID, name, age, email, phone, course ):
+        self.std = []
+        self.std.append(name)
+        self.std.append(age)
+        self.std.append(email)
+        self.std.append(phone)
+        self.std.append(course)
+        self.st = {
+            ID : self.std
+             }
+        
+        self.st = str(self.st)
+        with open("E:\GitDemo\Smart_College_Management_System\Student.txt", "a") as f:
+            f.write(self.st)
+
+    
+    def add_teacher(self, ID, name, subject, salary):
+        self.teach = []
+        self.teach.append(name)
+        self.teach.append(subject)
+        self.teach.append(salary)
+        self.teacher = {
+            ID : self.teach
+        }
+
+        self.teacher = str(self.teacher)
+        with open("E:\GitDemo\Smart_College_Management_System\Teacher.txt", "a") as f:
+            f.write(self.teacher)            
+        
+
+             
         
 
 class Teacher(Authentication):
