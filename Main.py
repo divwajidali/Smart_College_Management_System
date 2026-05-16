@@ -78,8 +78,23 @@ class Authentication:
             with open("E:\GitDemo\Smart_College_Management_System\Student.py", "a") as f:
                 f.write(self.info)
                 print("Signup Successfully.")
-                self.choice = input("1. View Profile\n2. View Attendance\n3. View Marks\n4. Logout\nEnter Choice :")
-                self.stu = Student(self.choice)
+                
+                self.stu = Student()
+                self.choice = input("1. View Profile\n2. View Marks\n3. Logout\nEnter Choice :")
+                if (choice == "1"):
+                    ID = input("Enter ID :")
+                    self.stu.view_profile(ID)
+
+                elif(choice == "2"):
+                    ID = input("Enter ID :")
+                    self.stu.view_marks(ID)
+
+                elif (choice == "3"):
+                    print("Lougout Successfully.\nExit!")
+
+                else:
+                    print("You entered invalid option.")
+
 
     def login(self, email, password, role):
         
@@ -161,8 +176,22 @@ class Authentication:
                 if email in self.data:
                     if password in self.data:
                         print("Login Successfully.")
-                        self.choice = input("1. View Profile\n2. View Attendance\n3. View Marks\n4. Logout\nEnter Choice :")
+                        self.choice = input("1. View Profile\n4. View Marks\n3. Logout\nEnter Choice :")
                         self.stu = Student(self.choice)
+
+                        if (choice == "1"):
+                            ID = input("Enter ID :")
+                            self.stu.view_profile(ID)
+
+                        elif(choice == "2"):
+                            ID = input("Enter ID :")
+                            self.stu.view_marks(ID)
+
+                        elif (choice == "3"):
+                            print("Lougout Successfully.\nExit!")
+
+                        else:
+                            print("You entered invalid option.")
                     else:
                         print("Invalid user name or password.")
                 else:
@@ -233,9 +262,22 @@ class Teacher(Authentication):
             print(self.data)
 
 class Student(Authentication):
-    def __init__(self, choice):
-        self.choice = choice
+    def __init__(self):
+        pass
+
+    def view_profile(self, ID):
+        with open("E:\GitDemo\Smart_College_Management_System\Student.json", "r") as f:
+            self.data = json.load(f)
+            for student in self.data:
+                if student["ID"] == ID :
+                    print(student)
         
+    def view_marks(self, ID):
+        with open("E:\GitDemo\Smart_College_Management_System\Student.json", "r") as f:
+            self.data = json.load(f)
+            for student in self.data:
+                if student["ID"] == ID :
+                    print(student["Marks"])
 
 c1 = Authentication()
 while True:
