@@ -13,18 +13,24 @@ class Authentication:
             self.info = str(self.info)
             with open("E:\GitDemo\Smart_College_Management_System\Admin.txt", "a") as f:
                 f.write(self.info)
+                print("Signup Successfully.")
+                self.ad = Admin()
 
         elif (role == "Teacher"):
             self.info.update({"Role" : role})
             self.info = str(self.info)
             with open("E:\GitDemo\Smart_College_Management_System\Teacher.txt", "a") as f:
                 f.write(self.info)
+                print("Signup Successfully.")
+                self.teach = Teacher()
 
         elif (role == "Student"):
             self.info.update({"Role" : role})
             self.info = str(self.info)
             with open("E:\GitDemo\Smart_College_Management_System\Student.txt", "a") as f:
                 f.write(self.info)
+                print("Signup Successfully.")
+                self.stu = Student()
 
     def login(self, email, password, role):
         
@@ -35,6 +41,7 @@ class Authentication:
                 if email in self.data:
                     if password in self.data:
                         print("Login Successfully.")
+                        self.ad = Admin()
                     else:
                         print("Invalid user name or password.")
                 else:
@@ -46,6 +53,7 @@ class Authentication:
                 if email in self.data:
                     if password in self.data:
                         print("Login Successfully.")
+                        self.teach = Teacher()
                     else:
                         print("Invalid user name or password.")
                 else:
@@ -57,15 +65,28 @@ class Authentication:
                 if email in self.data:
                     if password in self.data:
                         print("Login Successfully.")
+                        self.stu = Student()
                     else:
                         print("Invalid user name or password.")
                 else:
                     print("Invalid user name or password.")
-        
+
+
+class Admin(Authentication):
+    def __init__(self):
+        print("Admin Dashboard")
+
+class Teacher(Authentication):
+    def __init__(self):
+        print("Teacher Dashboard")
+
+class Student(Authentication):
+    def __init__(self):
+        pass
 
 c1 = Authentication()
 while True:
-    choice = input("1. Singup\n2. Login\nEnter Choice :")
+    choice = input("1. Singup\n2. Login\n3. Exit\nEnter Choice :")
 
     if (choice == "1"):
     
@@ -119,7 +140,8 @@ while True:
 
 
         c1.signup(name, email, password, role)
-        print("Signup Successfully.")
+        
+        
         break
 
 
@@ -135,6 +157,10 @@ while True:
             pass
      
         c1.login(email, password, role)
+        break
+
+    elif (choice == "3"):
+        print("Exit!")
         break
 
     else:
