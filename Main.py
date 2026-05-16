@@ -33,7 +33,7 @@ class Authentication:
                     salary = input("Enter Salary :")
                     self.ad.add_teacher(id, nme, subject, salary)
 
-                elif (choice == "3"):
+                elif (self.choice == "3"):
                     print("Lougout Successfully.")
                     print("Exit!")
 
@@ -87,7 +87,7 @@ class Authentication:
                             salary = input("Enter Salary :")
                             self.ad.add_teacher(id, name, subject, salary)
 
-                        elif (choice == "3"):
+                        elif (self.choice == "3"):
                             print("Lougout Successfully.")
                             print("Exit!")
 
