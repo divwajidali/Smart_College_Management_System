@@ -11,11 +11,11 @@ class Authentication:
         if (role == "Admin"):
             self.info.update({"Role" : role})
             self.info = str(self.info)
-            with open("E:\GitDemo\Smart_College_Management_System\Admin.txt", "a") as f:
+            with open("E:\GitDemo\Smart_College_Management_System\Admin.py", "a") as f:
                 f.write(self.info)
                 print("Signup Successfully.")
                 self.ad = Admin()
-                self.choice = input("1. Add Student\n2. Add Teacher\n3. Lougout\nEnter choice :")
+                self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Lougout\nEnter choice :")
                 
                 if (self.choice == "1"):
                     id = input("Enter Student ID :")
@@ -34,6 +34,12 @@ class Authentication:
                     self.ad.add_teacher(id, nme, subject, salary)
 
                 elif (self.choice == "3"):
+                    self.ad.all_students()
+
+                elif (self.choice == "4"):
+                    self.ad.all_teachers()
+
+                elif (self.choice == "5"):
                     print("Lougout Successfully.")
                     print("Exit!")
 
@@ -44,7 +50,7 @@ class Authentication:
         elif (role == "Teacher"):
             self.info.update({"Role" : role})
             self.info = str(self.info)
-            with open("E:\GitDemo\Smart_College_Management_System\Teacher.txt", "a") as f:
+            with open("E:\GitDemo\Smart_College_Management_System\Teacher.py", "a") as f:
                 f.write(self.info)
                 print("Signup Successfully.")
                 self.choice = input("1. Add Marks\n2.View Students\n3. Lougout\nEnter Choice :")
@@ -53,7 +59,7 @@ class Authentication:
         elif (role == "Student"):
             self.info.update({"Role" : role})
             self.info = str(self.info)
-            with open("E:\GitDemo\Smart_College_Management_System\Student.txt", "a") as f:
+            with open("E:\GitDemo\Smart_College_Management_System\Student.py", "a") as f:
                 f.write(self.info)
                 print("Signup Successfully.")
                 self.choice = input("1. View Profile\n2. View Attendance\n3. View Marks\n4. Logout\nEnter Choice :")
@@ -63,13 +69,13 @@ class Authentication:
         
 
         if (role == "Admin"):
-            with open("E:\GitDemo\Smart_College_Management_System\Admin.txt", "r") as f:
+            with open("E:\GitDemo\Smart_College_Management_System\Admin.py", "r") as f:
                 self.data = f.read()
                 if email in self.data:
                     if password in self.data:
                         print("Login Successfully.")
                         self.ad = Admin()
-                        self.choice = input("1. Add Student\n2. Add Teacher\n3. Lougout\nEnter choice :")
+                        self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Lougout\nEnter choice :")
                         
                         if (self.choice == "1"):
                             id = input("Enter Student ID :")
@@ -88,6 +94,12 @@ class Authentication:
                             self.ad.add_teacher(id, name, subject, salary)
 
                         elif (self.choice == "3"):
+                            self.ad.all_students()
+
+                        elif (self.choice == "4"):
+                            self.ad.all_teachers()
+
+                        elif (self.choice == "5"):
                             print("Lougout Successfully.")
                             print("Exit!")
 
@@ -100,7 +112,7 @@ class Authentication:
                     print("Invalid user name or password.")
 
         elif (role == "Teacher"):
-            with open("E:\GitDemo\Smart_College_Management_System\Teacher.txt", "r") as f:
+            with open("E:\GitDemo\Smart_College_Management_System\Teacher.py", "r") as f:
                 self.data = f.read()
                 if email in self.data:
                     if password in self.data:
@@ -113,7 +125,7 @@ class Authentication:
                     print("Invalid user name or password.")
 
         elif (role == "Student"):
-            with open("Smart_College_Management_System/Student.txt", "r") as f:
+            with open("E:\GitDemo\Smart_College_Management_System\Student.py", "r") as f:
                 self.data = f.read()
                 if email in self.data:
                     if password in self.data:
@@ -125,39 +137,45 @@ class Authentication:
                 else:
                     print("Invalid user name or password.")
 
-
+import json
 class Admin(Authentication):
     def __init__(self):
         pass
 
     def add_student(self, ID, name, age, email, phone, course ):
-        self.std = []
-        self.std.append(name)
-        self.std.append(age)
-        self.std.append(email)
-        self.std.append(phone)
-        self.std.append(course)
-        self.st = {
-            ID : self.std
-             }
-        
-        self.st = str(self.st)
-        with open("E:\GitDemo\Smart_College_Management_System\Student.txt", "a") as f:
-            f.write(self.st)
+        self.std = {
+            "ID" : ID,
+            "Name" : name,
+            "Age" : age,
+            "Email" : email,
+            "Phone no" : phone,
+            "Course" : course
+        }
+
+        with open("E:\GitDemo\Smart_College_Management_System\Student.json", "a") as f:
+            json.dump(self.std, f, indent=4)
+            
 
     
     def add_teacher(self, ID, name, subject, salary):
-        self.teach = []
-        self.teach.append(name)
-        self.teach.append(subject)
-        self.teach.append(salary)
         self.teacher = {
-            ID : self.teach
+            "ID" : ID,
+            "Name" : name,
+            "Subject" : subject,
+            "Salary" : salary
         }
+        with open("E:\GitDemo\Smart_College_Management_System\Teacher.json", "a") as f:
+            json.dump(self.teacher, f, indent=4)
 
-        self.teacher = str(self.teacher)
-        with open("E:\GitDemo\Smart_College_Management_System\Teacher.txt", "a") as f:
-            f.write(self.teacher)            
+    def all_students (self):
+        with open("E:\GitDemo\Smart_College_Management_System\Student.json", "r") as f:
+            self.data = json.load(f)
+            print(self.data)
+
+    def all_teachers(self):
+        with open("E:\GitDemo\Smart_College_Management_System\Teacher.json", "r") as f:
+            self.data = json.load(f)
+            print(self.data)            
         
 
              
