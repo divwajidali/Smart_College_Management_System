@@ -7,21 +7,41 @@ class Authentication:
         self.email = email
         self.role = role
         self.password = password
-        
-        
+        self.info = {}
+        self.info.update({"Name" : name})
+        self.info.update({"Email" : email})
+        self.info.update({"Password" : password})
+        if (role == "Admin"):
+                self.info.update({"Role" : role})
+                self.info = str(self.info)
+                with open("E:\GitDemo\Smart_College_Management_System\Admin.txt", "a") as f:
+                    f.write(self.info)
+
+        elif (role == "Teacher"):
+                self.info.update({"Role" : role})
+                self.info = str(self.info)
+                with open("E:\GitDemo\Smart_College_Management_System\Teacher.txt", "a") as f:
+                    f.write(self.info)
+
+        elif (role == "Student"):
+                self.info.update({"Role" : role})
+                self.info = str(self.info)
+                with open("E:\GitDemo\Smart_College_Management_System\Student.txt", "a") as f:
+                    f.write(self.info)
+
 
 c1 = Authentication()
 choice = input("1. Singup\n2. Login\nEnter Choice :")
 
 if (choice == "1"):
-    info = {}
+    
    
     name = input("Enter Name :")
-    info.update({"Name" : name})
+    
     while True:
         email = input("Enter Email :")
         if (email.endswith("@gmail.com")):
-            info.update({"Email" : email})
+            
             break
         else:
             print("You email is incorret.\nPlease enter email again.")
@@ -33,7 +53,7 @@ if (choice == "1"):
     
 
         else:
-            info.update({"Password" : password})
+            
             break
 
     while True:
@@ -42,24 +62,15 @@ if (choice == "1"):
             role = role.title()
 
             if (role == "Admin"):
-                info.update({"Role" : role})
-                info = str(info)
-                with open("Admin.txt", "a") as f:
-                    f.write(info)
+                
                 break
 
             elif (role == "Teacher"):
-                info.update({"Role" : role})
-                info = str(info)
-                with open("Teacher.txt", "a") as f:
-                    f.write(info)
+                
                 break
 
-            elif (role == "Student"):
-                info.update({"Role" : role})
-                info = str(info)
-                with open("Student.txt", "a") as f:
-                    f.write(info)
+            elif(role == "Student"):
+                
                 break
 
             else:
