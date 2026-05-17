@@ -30,7 +30,23 @@ class User:
             self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Lougout\nEnter choice :")
                 
             if (self.choice == "1"):
-                id = input("Enter Student ID :")
+                while True:
+                    id = input("Enter Student ID :")
+
+                    try :
+                        with open("Student.json", "r") as f :
+                            data = json.load(f)
+
+                    except :
+                        data = []
+
+                    for user in data:
+                        if user["ID"] == id :
+                            print("ID already exist.\nTry with different ID.")
+
+                    else:
+                        break
+                             
                 nme = input("Enter Student Name :")
                 age = input("Enter Student Age :")
                 while True:
@@ -56,7 +72,23 @@ class User:
                 self.ad.add_student(id,nme, age, emal, phone, course)
 
             elif (self.choice == "2"):
-                id = input("Enter Teacher ID :")
+                
+                while True:
+                    id = input("Enter Teacher ID :")
+
+                    try :
+                        with open("Teacher.json", "r") as f :
+                            data = json.load(f)
+
+                    except :
+                        data = []
+
+                    for user in data:
+                        if user["ID"] == id :
+                            print("ID already exist.\nTry with different ID.")
+
+                    else:
+                        break
                 nme = input("Enter Teacher Name :")
                 subject = input("Enter Subject :")
                 salary = input("Enter Salary :")
@@ -130,7 +162,23 @@ class User:
                                 self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Lougout\nEnter choice :")
                 
                                 if (self.choice == "1"):
-                                    id = input("Enter Student ID :")
+                                
+                                    while True:
+                                        id = input("Enter Student ID :")
+
+                                        try :
+                                            with open("Student.json", "r") as f :
+                                                data = json.load(f)
+
+                                        except :
+                                            data = []
+
+                                        for user in data:
+                                            if user["ID"] == id :
+                                                print("ID already exist.\nTry with different ID.")
+
+                                        else:
+                                            break
                                     name = input("Enter Student Name :")
                                     age = input("Enter Student Age :")
                                     while True:
@@ -156,7 +204,22 @@ class User:
                                     self.ad.add_student(id,name, age, emal, phone, course)
 
                                 elif (self.choice == "2"):
-                                    id = input("Enter Teacher ID :")
+                                    while True:
+                                        id = input("Enter Teacher ID :")
+
+                                        try :
+                                            with open("Teacher.json", "r") as f :
+                                                data = json.load(f)
+
+                                        except :
+                                            data = []
+
+                                        for user in data:
+                                            if user["ID"] == id :
+                                                print("ID already exist.\nTry with different ID.")
+
+                                        else:
+                                            break
                                     name = input("Enter Teacher Name :")
                                     subject = input("Enter Subject :")
                                     salary = input("Enter Salary :")
