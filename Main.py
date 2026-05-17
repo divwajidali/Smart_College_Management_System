@@ -7,7 +7,7 @@ def validate_email():
                     with open("User.json", "r") as f :
                         data = json.load(f)
 
-                except:
+                except FileNotFoundError:
                     data = []
 
                 exist = False
@@ -34,7 +34,7 @@ def check_student_id():
             with open("Student.json", "r") as f :
                 data = json.load(f)
 
-        except :
+        except FileNotFoundError:
             data = []
 
         exist = False
@@ -49,7 +49,32 @@ def check_student_id():
             continue
 
                     
-        return email
+        return id
+    
+def check_teacher_id():
+    while True:
+        id = input("Enter Teacher ID :")
+
+        try :
+            with open("Teacher.json", "r") as f :
+                data = json.load(f)
+
+        except FileNotFoundError:
+            data = []
+
+        exist = False
+
+        for user in data:
+            if user["ID"] == id :
+                exist = True
+                print("ID already exist.\nTry with different ID.")
+                break
+
+        if exist :
+            continue
+
+                    
+        return id
 
 class User:
     def __init__(self):
@@ -68,7 +93,7 @@ class User:
             with open("User.json", "r") as f :
                 self.data = json.load(f)
 
-        except:
+        except FileNotFoundError:
             self.data = []
 
         self.data.append(self.info)
@@ -129,7 +154,7 @@ class User:
                     
                 if not found :
                     print("Invalid Email or password.")
-        except:
+        except FileNotFoundError:
             print("Invalid Email or password.")
 
 class Admin(User):
@@ -152,7 +177,7 @@ class Admin(User):
                 self.add_student(id,name, age, email, phone, course)
 
             elif (self.choice == "2"):
-                id = check_student_id()
+                id = check_teacher_id()
                 name = input("Enter Teacher Name :")
                 subject = input("Enter Subject :")
                 salary = input("Enter Salary :")
@@ -185,7 +210,7 @@ class Admin(User):
             with open("Student.json", "r") as f:
                 self.data = json.load(f)
 
-        except:
+        except FileNotFoundError:
             self.data = []
 
         self.data.append(self.std)    
@@ -206,7 +231,7 @@ class Admin(User):
             with open("Teacher.json", "r") as f :
                 self.data = json.load(f)
 
-        except:
+        except FileNotFoundError:
             self.data = []
 
         self.data.append(self.teacher)    
@@ -218,7 +243,7 @@ class Admin(User):
             with open("Student.json", "r") as f:
                 self.data = json.load(f)
 
-        except:
+        except FileNotFoundError:
             self.data = "No student found."
         print(self.data)
 
@@ -227,7 +252,7 @@ class Admin(User):
             with open("Teacher.json", "r") as f:
                 self.data = json.load(f)
             
-        except:
+        except FileNotFoundError:
             self.data = "No teacher found."
         print(self.data)            
         
@@ -279,7 +304,7 @@ class Teacher(User):
                     print("Student not found.")
 
 
-        except:
+        except FileNotFoundError:
             print("Student not found.")
 
     def view_students (self):
@@ -287,7 +312,7 @@ class Teacher(User):
             with open("Student.json", "r") as f:
                 self.data = json.load(f)
 
-        except:
+        except FileNotFoundError:
             self.data = "No student found."
         print(self.data)
 
@@ -328,7 +353,7 @@ class Student(User):
                 if not found :
                     print("Student not found.")
 
-        except:
+        except FileNotFoundError:
             print("Student not found.")
         
     def view_marks(self, ID):
@@ -345,7 +370,7 @@ class Student(User):
                 if not found :
                     print("Student not found.")
 
-        except:
+        except FileNotFoundError:
             print("Student not found.")
 
 c1 = User()
