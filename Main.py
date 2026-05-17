@@ -40,12 +40,19 @@ class User:
                     except :
                         data = []
 
+                    exist = False
+
                     for user in data:
                         if user["ID"] == id :
+                            exist = True
                             print("ID already exist.\nTry with different ID.")
+                            break
 
-                    else:
-                        break
+                    if exist :
+                        continue
+
+                    
+                    break
                              
                 nme = input("Enter Student Name :")
                 age = input("Enter Student Age :")
@@ -59,9 +66,16 @@ class User:
 
                         except:
                             data = []
+
+                        exist = False
                         for user in data :
                             if user["Email"] == emal :
+                                exist = True
                                 print("Email already exist.\nPlease Enter another email.")
+                                break
+
+                        if exist :
+                            continue
 
                         break
 
@@ -83,12 +97,19 @@ class User:
                     except :
                         data = []
 
+                    exist = False
+
                     for user in data:
                         if user["ID"] == id :
+                            exist = True
                             print("ID already exist.\nTry with different ID.")
+                            break
 
-                    else:
-                        break
+                    if exist :
+                        continue
+
+                    
+                    break
                 nme = input("Enter Teacher Name :")
                 subject = input("Enter Subject :")
                 salary = input("Enter Salary :")
@@ -133,15 +154,15 @@ class User:
                 
             self.std = Student()
             self.choice = input("1. View Profile\n2. View Marks\n3. Logout\nEnter Choice :")
-            if (choice == "1"):
+            if (self.choice == "1"):
                 ID = input("Enter ID :")
                 self.std.view_profile(ID)
 
-            elif(choice == "2"):
+            elif(self.choice == "2"):
                 ID = input("Enter ID :")
                 self.std.view_marks(ID)
 
-            elif (choice == "3"):
+            elif (self.choice == "3"):
                 print("Lougout Successfully.\nExit!")
 
             else:
@@ -173,12 +194,19 @@ class User:
                                         except :
                                             data = []
 
+                                        exist = False
+
                                         for user in data:
                                             if user["ID"] == id :
+                                                exist = True
                                                 print("ID already exist.\nTry with different ID.")
+                                                break
 
-                                        else:
-                                            break
+                                        if exist :
+                                            continue
+
+                                        
+                                        break
                                     name = input("Enter Student Name :")
                                     age = input("Enter Student Age :")
                                     while True:
@@ -191,9 +219,16 @@ class User:
 
                                             except:
                                                 data = []
+
+                                            exist = False
                                             for user in data :
                                                 if user["Email"] == emal :
+                                                    exist = True
                                                     print("Email already exist.\nPlease Enter another email.")
+                                                    break
+
+                                            if exist:
+                                                continue
 
                                             break
 
@@ -214,12 +249,19 @@ class User:
                                         except :
                                             data = []
 
+                                        exist = False
+
                                         for user in data:
                                             if user["ID"] == id :
+                                                exist = True
                                                 print("ID already exist.\nTry with different ID.")
+                                                break
 
-                                        else:
-                                            break
+                                        if exist :
+                                            continue
+
+                                        
+                                        break
                                     name = input("Enter Teacher Name :")
                                     subject = input("Enter Subject :")
                                     salary = input("Enter Salary :")
@@ -264,15 +306,15 @@ class User:
                 
                                 self.std = Student()
                                 self.choice = input("1. View Profile\n2. View Marks\n3. Logout\nEnter Choice :")
-                                if (choice == "1"):
+                                if (self.choice == "1"):
                                     ID = input("Enter ID :")
                                     self.std.view_profile(ID)
 
-                                elif(choice == "2"):
+                                elif(self.choice == "2"):
                                     ID = input("Enter ID :")
                                     self.std.view_marks(ID)
 
-                                elif (choice == "3"):
+                                elif (self.choice == "3"):
                                     print("Lougout Successfully.\nExit!")
 
                                 else:
@@ -308,7 +350,7 @@ class Admin(User):
 
         self.data.append(self.std)    
         with open("Student.json", "w") as f:
-            json.dump(self.std, f, indent=4)
+            json.dump(self.data, f, indent=4)
             
 
     
@@ -329,7 +371,7 @@ class Admin(User):
 
         self.data.append(self.teacher)    
         with open("Teacher.json", "w") as f:
-            json.dump(self.teacher, f, indent=4)
+            json.dump(self.data, f, indent=4)
 
     def all_students (self):
         try:
@@ -389,12 +431,15 @@ class Student(User):
         try:
             with open("Student.json", "r") as f:
                 self.data = json.load(f)
+                found = False
                 for student in self.data:
                     if student["ID"] == ID :
                         print(student)
+                        found = True
+                        break
 
-                    else:
-                        print("Student not found.")
+                if not found :
+                    print("Student not found.")
 
         except:
             print("Student not found.")
@@ -403,12 +448,15 @@ class Student(User):
         try:
             with open("Student.json", "r") as f:
                 self.data = json.load(f)
+                found = True
                 for student in self.data:
                     if student["ID"] == ID :
-                        print(f"Marks : {student["Marks"]}")
+                        print(f"Marks : {student['Marks']}")
+                        found = True
+                        break
 
-                    else:
-                        print("Student not found.")
+                if not found :
+                    print("Student not found.")
 
         except:
             print("Student not found.")
@@ -437,11 +485,19 @@ while True:
 
                 except:
                     data = []
+
+                exist = False
                 for user in data :
                     if user["Email"] == email :
+                        exist = True
                         print("Email already exist.\nPlease Enter another email.")
+                        break
+
+                if exist:
+                    continue
 
                 break
+
 
             else:
                 print("Invalid Email.\nPlease enter again.")
