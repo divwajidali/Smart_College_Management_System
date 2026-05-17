@@ -26,12 +26,12 @@ def validate_email():
             else:
                 print("Invalid Email.\nPlease enter again.")
 
-def check_student_id():
+def check_id(filname, role):
     while True:
-        id = input("Enter Student ID :")
+        id = input(f"Enter {role} ID :")
 
         try :
-            with open("Student.json", "r") as f :
+            with open(filname, "r") as f :
                 data = json.load(f)
 
         except FileNotFoundError:
@@ -51,30 +51,7 @@ def check_student_id():
                     
         return id
     
-def check_teacher_id():
-    while True:
-        id = input("Enter Teacher ID :")
 
-        try :
-            with open("Teacher.json", "r") as f :
-                data = json.load(f)
-
-        except FileNotFoundError:
-            data = []
-
-        exist = False
-
-        for user in data:
-            if user["ID"] == id :
-                exist = True
-                print("ID already exist.\nTry with different ID.")
-                break
-
-        if exist :
-            continue
-
-                    
-        return id
 
 class User:
     def __init__(self):
@@ -167,7 +144,7 @@ class Admin(User):
             self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Logout\nEnter choice :")
                 
             if (self.choice == "1"):
-                id = check_student_id()             
+                id = check_id("Student.json", "Student")             
                 name = input("Enter Student Name :")
                 age = input("Enter Student Age :")
                 email = validate_email()
@@ -177,7 +154,7 @@ class Admin(User):
                 self.add_student(id,name, age, email, phone, course)
 
             elif (self.choice == "2"):
-                id = check_teacher_id()
+                id = check_id("Teacher.json", "Teacher")
                 name = input("Enter Teacher Name :")
                 subject = input("Enter Subject :")
                 salary = input("Enter Salary :")
