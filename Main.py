@@ -79,7 +79,7 @@ class User:
 
 
         print("Signup Successfully.")
-
+        self.email = email
         if (role == "Admin"):
             
             self.ad = Admin()
@@ -94,11 +94,13 @@ class User:
         elif (role == "Student"):
             
                 
-            self.std = Student()
+            self.std = Student(self.email)
+            
             self.std.student_menu()        
 
 
     def login(self, email, password):
+        self.email = email
         try:
             with open("User.json", "r") as f :
                 self.data = json.load(f)
@@ -123,7 +125,7 @@ class User:
                             elif user["Role"] == "Student":
             
                 
-                                self.std = Student()
+                                self.std = Student(self.email)
                                 self.std.student_menu()
                             break
 
@@ -317,20 +319,18 @@ class Teacher(User):
         print("-" * 120)
 
 class Student(User):
-    def __init__(self):
-        pass
+    def __init__(self, email):
+        self.email = email
     
     def student_menu(self):
         while True:
 
             self.choice = input("1. View Profile\n2. View Marks\n3. Logout\nEnter Choice :")
             if (self.choice == "1"):
-                ID = input("Enter ID :")
-                self.view_profile(ID)
+                self.view_profile()
 
             elif(self.choice == "2"):
-                ID = input("Enter ID :")
-                self.view_marks(ID)
+                self.view_marks()
 
             elif (self.choice == "3"):
                 print("Logout Successfully.\nExit!")
@@ -339,39 +339,47 @@ class Student(User):
             else:
                 print("You entered invalid option.")
 
-    def view_profile(self, ID):
+    def view_profile(self):
         try:
             with open("Student.json", "r") as f:
                 self.data = json.load(f)
                 found = False
                 for student in self.data:
-                    if student["ID"] == ID :
-                        print(student)
-                        found = True
-                        break
+                    if student["Email"] == self.email :
+                        
+                        print("-" * 120)
 
-                if not found :
-                    print("Student not found.")
+                        print(f"{'ID' :<10}{'Name' :<15}{'Age' :<10}{'Email' :<30}{'Phone' :<30}{'Course' :<15}{'Marks' :<10}")
 
-        except FileNotFoundError:
-            print("Student not found.")
+                        print("-" * 120)
         
-    def view_marks(self, ID):
+                        print(f"{student['ID'] :<10}{student['Name'] :<15}{student['Age'] :<10}{student['Email'] :<30}{student['Phone no'] :<30}{student['Course'] :<15}{student.get('Marks', 'N/A') :<10}")
+                        print("-" * 120)
+                        found = True
+                        break
+
+                if not found :
+                    print("Profile not found.")
+
+        except FileNotFoundError:
+            print("Profile not found.")
+        
+    def view_marks(self):
         try:
             with open("Student.json", "r") as f:
                 self.data = json.load(f)
                 found = False
                 for student in self.data:
-                    if student["ID"] == ID :
-                        print(f"Marks : {student['Marks']}")
+                    if student["Email"] == self.email :
+                        print(f"Marks : {student.get('Marks', 'N/A')}")
                         found = True
                         break
 
                 if not found :
-                    print("Student not found.")
+                    print("Profile not found.")
 
         except FileNotFoundError:
-            print("Student not found.")
+            print("Profile not found.")
 
 c1 = User()
 while True:
