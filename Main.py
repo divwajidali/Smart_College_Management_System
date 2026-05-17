@@ -222,7 +222,15 @@ class Admin(User):
 
         except FileNotFoundError:
             self.data = "No student found."
-        print(self.data)
+
+        print("-" * 120)
+
+        print(f"{'ID' :<10}{'Name' :<15}{'Age' :<10}{'Email' :<30}{'Phone' :<30}{'Course' :<15}{'Marks' :<10}")
+
+        print("-" * 120)
+        for student in self.data :
+            print(f"{student['ID'] :<10}{student['Name'] :<15}{student['Age'] :<10}{student['Email'] :<30}{student['Phone no'] :<30}{student['Course'] :<15}{student.get('Marks', 'N/A') :<10}")
+        print("-" * 120)
 
     def all_teachers(self):
         try:
@@ -231,7 +239,14 @@ class Admin(User):
             
         except FileNotFoundError:
             self.data = "No teacher found."
-        print(self.data)            
+        print("-" * 60)
+
+        print(f"{'ID' :<10}{'Name' :<15}{'Subject' :<20}{'Salary' :<15}")
+
+        print("-" * 60)
+        for teacher in self.data :
+            print(f"{teacher['ID'] :<10}{teacher['Name'] :<15}{teacher['Subject'] :<20}{teacher['Salary'] :<15}")
+        print("-" * 60)
         
 
              
@@ -291,7 +306,15 @@ class Teacher(User):
 
         except FileNotFoundError:
             self.data = "No student found."
-        print(self.data)
+
+        print("-" * 120)
+
+        print(f"{'ID' :<10}{'Name' :<15}{'Age' :<10}{'Email' :<30}{'Phone' :<30}{'Course' :<15}{'Marks' :<10}")
+
+        print("-" * 120)
+        for student in self.data :
+            print(f"{student['ID'] :<10}{student['Name'] :<15}{student['Age'] :<10}{student['Email'] :<30}{student['Phone no'] :<30}{student['Course'] :<15}{student.get('Marks', 'N/A') :<10}")
+        print("-" * 120)
 
 class Student(User):
     def __init__(self):
@@ -402,7 +425,7 @@ while True:
         c1.signup(name, email, password, role)
         
         
-        break
+        
 
 
 
@@ -412,7 +435,7 @@ while True:
         password = input("Enter Password :")
      
         c1.login(email, password)
-        break
+        
 
     elif (choice == "3"):
         print("Exit!")
