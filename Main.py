@@ -1,4 +1,5 @@
-class Authentication:
+import json
+class User:
     def __init__(self):
         pass
 
@@ -8,197 +9,220 @@ class Authentication:
         self.info.update({"Name" : name})
         self.info.update({"Email" : email})
         self.info.update({"Password" : password})
+        self.info.update({"Role" : role})
+        try:
+            with open("User.json", "r") as f :
+                self.data = json.load(f)
+
+        except:
+            self.data = []
+
+        self.data.append(self.info)
+        with open("User.json", "w") as f :
+            json.dump(self.data, f, indent=4)
+
+
+        print("Signup Successfully.")
+
         if (role == "Admin"):
-            self.info.update({"Role" : role})
-            self.info = str(self.info)
-            with open("E:\GitDemo\Smart_College_Management_System\Admin.py", "a") as f:
-                f.write(self.info)
-                print("Signup Successfully.")
-                self.ad = Admin()
-                self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Lougout\nEnter choice :")
+            
+            self.ad = Admin()
+            self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Lougout\nEnter choice :")
                 
-                if (self.choice == "1"):
-                    id = input("Enter Student ID :")
-                    nme = input("Enter Student Name :")
-                    age = input("Enter Student Age :")
-                    emal = input("Enter Student Email :")
-                    phone = input("Enter Student Phone :")
-                    course = input("Enter Student Course :")
-                    self.ad.add_student(id,nme, age, emal, phone, course)
+            if (self.choice == "1"):
+                id = input("Enter Student ID :")
+                nme = input("Enter Student Name :")
+                age = input("Enter Student Age :")
+                while True:
+                    emal = input("Enter Email : ")
 
-                elif (self.choice == "2"):
-                    id = input("Enter Teacher ID :")
-                    nme = input("Enter Teacher Name :")
-                    subject = input("Enter Subject :")
-                    salary = input("Enter Salary :")
-                    self.ad.add_teacher(id, nme, subject, salary)
+                    if ("@" in emal and "." in emal and emal.endswith(".com")):
+                        try:
+                            with open("User.json", "r") as f :
+                                data = json.load(f)
 
-                elif (self.choice == "3"):
-                    self.ad.all_students()
+                        except:
+                            data = []
+                        for user in data :
+                            if user["Email"] == emal :
+                                print("Email already exist.\nPlease Enter another email.")
 
-                elif (self.choice == "4"):
-                    self.ad.all_teachers()
+                        break
 
-                elif (self.choice == "5"):
-                    print("Lougout Successfully.")
-                    print("Exit!")
+                    else:
+                        print("Invalid Email.\nPlease enter again.")
+                phone = input("Enter Student Phone :")
+                course = input("Enter Student Course :")
+                self.ad.add_student(id,nme, age, emal, phone, course)
 
-                else:
-                    print("You entered an invalid option.")
+            elif (self.choice == "2"):
+                id = input("Enter Teacher ID :")
+                nme = input("Enter Teacher Name :")
+                subject = input("Enter Subject :")
+                salary = input("Enter Salary :")
+                self.ad.add_teacher(id, nme, subject, salary)
+
+            elif (self.choice == "3"):
+                self.ad.all_students()
+
+            elif (self.choice == "4"):
+                self.ad.all_teachers()
+
+            elif (self.choice == "5"):
+                print("Lougout Successfully.")
+                print("Exit!")
+
+            else:
+                print("You entered an invalid option.")
 
 
         elif (role == "Teacher"):
-            self.info.update({"Role" : role})
-            self.info = str(self.info)
-            with open("E:\GitDemo\Smart_College_Management_System\Teacher.py", "a") as f:
-                f.write(self.info)
-                print("Signup Successfully.")
-                
-                self.teach = Teacher()
-                self.choice = input("1. Add Marks\n2.View Students\n3. Lougout\nEnter Choice :")
+            
+            self.teac = Teacher()
+            self.choice = input("1. Add Marks\n2.View Students\n3. Lougout\nEnter Choice :")
 
-                if (self.choice == "1"):
-                    ID = input("Enter ID :")
-                    marks = input("Enter Marks :")
-                    self.teach.marks(ID, marks)
+            if (self.choice == "1"):
+                ID = input("Enter ID :")
+                marks = input("Enter Marks :")
+                self.teac.marks(ID, marks)
 
-                elif (self.choice == "2"):
-                    self.teach.view_students()
+            elif (self.choice == "2"):
+                self.teac.view_students()
 
-                elif (self.choice == "3"):
-                    print("Lougout Successfully.\nExit!")
+            elif (self.choice == "3"):
+                print("Lougout Successfully.\nExit!")
 
-                else:
-                    print("You entered invalid option.")
+            else:
+                print("You entered invalid option.")
 
 
         elif (role == "Student"):
-            self.info.update({"Role" : role})
-            self.info = str(self.info)
-            with open("E:\GitDemo\Smart_College_Management_System\Student.py", "a") as f:
-                f.write(self.info)
-                print("Signup Successfully.")
+            
                 
-                self.stu = Student()
-                self.choice = input("1. View Profile\n2. View Marks\n3. Logout\nEnter Choice :")
-                if (choice == "1"):
-                    ID = input("Enter ID :")
-                    self.stu.view_profile(ID)
+            self.std = Student()
+            self.choice = input("1. View Profile\n2. View Marks\n3. Logout\nEnter Choice :")
+            if (choice == "1"):
+                ID = input("Enter ID :")
+                self.std.view_profile(ID)
 
-                elif(choice == "2"):
-                    ID = input("Enter ID :")
-                    self.stu.view_marks(ID)
+            elif(choice == "2"):
+                ID = input("Enter ID :")
+                self.std.view_marks(ID)
 
-                elif (choice == "3"):
-                    print("Lougout Successfully.\nExit!")
+            elif (choice == "3"):
+                print("Lougout Successfully.\nExit!")
 
-                else:
-                    print("You entered invalid option.")
+            else:
+                print("You entered invalid option.")
 
 
-    def login(self, email, password, role):
-        
+    def login(self, email, password):
+        try:
+            with open("User.json", "r") as f :
+                self.data = json.load(f)
+                for user in self.data:
+                    if user["Email"] == email :
+                        if user["Password"] == password :
+                            print("Login Successfullly.")
+                            if user["Role"] == "Admin" :
+            
+                                self.ad = Admin()
+                                self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Lougout\nEnter choice :")
+                
+                                if (self.choice == "1"):
+                                    id = input("Enter Student ID :")
+                                    name = input("Enter Student Name :")
+                                    age = input("Enter Student Age :")
+                                    while True:
+                                        emal = input("Enter Email : ")
 
-        if (role == "Admin"):
-            with open("E:\GitDemo\Smart_College_Management_System\Admin.py", "r") as f:
-                self.data = f.read()
-                if email in self.data:
-                    if password in self.data:
-                        print("Login Successfully.")
-                        self.ad = Admin()
-                        self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Lougout\nEnter choice :")
-                        
-                        if (self.choice == "1"):
-                            id = input("Enter Student ID :")
-                            name = input("Enter Student Name :")
-                            age = input("Enter Student Age :")
-                            emal = input("Enter Student Email :")
-                            phone = input("Enter Student Phone :")
-                            course = input("Enter Student Course :")
-                            self.ad.add_student(id,name, age, emal, phone, course)
+                                        if ("@" in emal and "." in emal and emal.endswith(".com")):
+                                            try:
+                                                with open("User.json", "r") as f :
+                                                    data = json.load(f)
 
-                        elif (self.choice == "2"):
-                            id = input("Enter Teacher ID :")
-                            name = input("Enter Teacher Name :")
-                            subject = input("Enter Subject :")
-                            salary = input("Enter Salary :")
-                            self.ad.add_teacher(id, name, subject, salary)
+                                            except:
+                                                data = []
+                                            for user in data :
+                                                if user["Email"] == emal :
+                                                    print("Email already exist.\nPlease Enter another email.")
 
-                        elif (self.choice == "3"):
-                            self.ad.all_students()
+                                            break
 
-                        elif (self.choice == "4"):
-                            self.ad.all_teachers()
+                                        else:
+                                            print("Invalid Email.\nPlease enter again.")
+                                    phone = input("Enter Student Phone :")
+                                    course = input("Enter Student Course :")
+                                    self.ad.add_student(id,name, age, emal, phone, course)
 
-                        elif (self.choice == "5"):
-                            print("Lougout Successfully.")
-                            print("Exit!")
+                                elif (self.choice == "2"):
+                                    id = input("Enter Teacher ID :")
+                                    name = input("Enter Teacher Name :")
+                                    subject = input("Enter Subject :")
+                                    salary = input("Enter Salary :")
+                                    self.ad.add_teacher(id, name, subject, salary)
 
-                        else:
-                            print("You entered an invalid option.")
+                                elif (self.choice == "3"):
+                                    self.ad.all_students()
+
+                                elif (self.choice == "4"):
+                                    self.ad.all_teachers()
+
+                                elif (self.choice == "5"):
+                                    print("Lougout Successfully.")
+                                    print("Exit!")
+
+                                else:
+                                    print("You entered an invalid option.")
+
+
+                            elif user["Role"] == "Teacher":
+            
+                                self.teac = Teacher()
+                                self.choice = input("1. Add Marks\n2.View Students\n3. Lougout\nEnter Choice :")
+
+                                if (self.choice == "1"):
+                                    ID = input("Enter ID :")
+                                    marks = input("Enter Marks :")
+                                    self.teac.marks(ID, marks)
+
+                                elif (self.choice == "2"):
+                                    self.teac.view_students()
+
+                                elif (self.choice == "3"):
+                                    print("Lougout Successfully.\nExit!")
+
+                                else:
+                                    print("You entered invalid option.")
+
+
+                            elif user["Role"] == "Student":
+            
+                
+                                self.std = Student()
+                                self.choice = input("1. View Profile\n2. View Marks\n3. Logout\nEnter Choice :")
+                                if (choice == "1"):
+                                    ID = input("Enter ID :")
+                                    self.std.view_profile(ID)
+
+                                elif(choice == "2"):
+                                    ID = input("Enter ID :")
+                                    self.std.view_marks(ID)
+
+                                elif (choice == "3"):
+                                    print("Lougout Successfully.\nExit!")
+
+                                else:
+                                    print("You entered invalid option.")
+
+
                     
-                    else:
-                        print("Invalid user name or password.")
                 else:
-                    print("Invalid user name or password.")
+                    print("Invalid Email or password.")
+        except:
+            print("Invalid Email or password.")
 
-        elif (role == "Teacher"):
-            with open("E:\GitDemo\Smart_College_Management_System\Teacher.py", "r") as f:
-                self.data = f.read()
-                if email in self.data:
-                    if password in self.data:
-                        print("Login Successfully.")
-                        
-                        self.teach = Teacher()
-                        self.choice = input("1. Add Marks\n2.View Students\n3. Lougout\nEnter Choice :")
-                        if (self.choice == "1"):
-                            ID = input("Enter ID :")
-                            marks = input("Enter Marks :")
-                            self.teach.marks(ID, marks)
-
-                        elif (self.choice == "2"):
-                            self.teach.view_students()
-
-                        elif (self.choice == "3"):
-                            print("Lougout Successfully.\nExit!")
-
-                        else:
-                            print("You entered invalid option.")
-
-                    else:
-                        print("Invalid user name or password.")
-                else:
-                    print("Invalid user name or password.")
-
-        elif (role == "Student"):
-            with open("E:\GitDemo\Smart_College_Management_System\Student.py", "r") as f:
-                self.data = f.read()
-                if email in self.data:
-                    if password in self.data:
-                        print("Login Successfully.")
-                        self.choice = input("1. View Profile\n4. View Marks\n3. Logout\nEnter Choice :")
-                        self.stu = Student(self.choice)
-
-                        if (choice == "1"):
-                            ID = input("Enter ID :")
-                            self.stu.view_profile(ID)
-
-                        elif(choice == "2"):
-                            ID = input("Enter ID :")
-                            self.stu.view_marks(ID)
-
-                        elif (choice == "3"):
-                            print("Lougout Successfully.\nExit!")
-
-                        else:
-                            print("You entered invalid option.")
-                    else:
-                        print("Invalid user name or password.")
-                else:
-                    print("Invalid user name or password.")
-
-import json
-class Admin(Authentication):
+class Admin(User):
     def __init__(self):
         pass
 
@@ -212,7 +236,15 @@ class Admin(Authentication):
             "Course" : course
         }
 
-        with open("E:\GitDemo\Smart_College_Management_System\Student.json", "a") as f:
+        try:
+            with open("Student.json", "r") as f:
+                self.data = json.load(f)
+
+        except:
+            self.data = []
+
+        self.data.append(self.std)    
+        with open("Student.json", "w") as f:
             json.dump(self.std, f, indent=4)
             
 
@@ -224,62 +256,101 @@ class Admin(Authentication):
             "Subject" : subject,
             "Salary" : salary
         }
-        with open("E:\GitDemo\Smart_College_Management_System\Teacher.json", "a") as f:
+
+        try:
+            with open("Teacher.json", "r") as f :
+                self.data = json.load(f)
+
+        except:
+            self.data = []
+
+        self.data.append(self.teacher)    
+        with open("Teacher.json", "w") as f:
             json.dump(self.teacher, f, indent=4)
 
     def all_students (self):
-        with open("E:\GitDemo\Smart_College_Management_System\Student.json", "r") as f:
-            self.data = json.load(f)
-            print(self.data)
+        try:
+            with open("Student.json", "r") as f:
+                self.data = json.load(f)
+
+        except:
+            self.data = "No student found."
+        print(self.data)
 
     def all_teachers(self):
-        with open("E:\GitDemo\Smart_College_Management_System\Teacher.json", "r") as f:
-            self.data = json.load(f)
-            print(self.data)            
+        try:
+            with open("Teacher.json", "r") as f:
+                self.data = json.load(f)
+            
+        except:
+            self.data = "No teacher found."
+        print(self.data)            
         
 
              
-        
+    
 
-class Teacher(Authentication):
+class Teacher(User):
     def __init__(self):
         pass
 
     
     def marks(self, ID, marks):
-        with open("E:\GitDemo\Smart_College_Management_System\Student.json", "r") as f:
-            self.data = json.load(f)
-            for i in self.data:
-                if i["ID"] == ID :
-                    i["Marks"] = marks
+        try:
+            with open("Student.json", "r") as f:
+                self.data = json.load(f)
+                for i in self.data:
+                    if i["ID"] == ID :
+                        i["Marks"] = marks
 
-        with open("Smart_College_Management_System/Student.json", "a"):
+        except:
+            print("Student not found.")
+
+        with open("Student.json", "w") as f:
             json.dump(self.data, f , indent=4)
 
     def view_students (self):
-        with open("E:\GitDemo\Smart_College_Management_System\Student.json", "r") as f:
-            self.data = json.load(f)
-            print(self.data)
+        try:
+            with open("Student.json", "r") as f:
+                self.data = json.load(f)
 
-class Student(Authentication):
+        except:
+            self.data = "No student found."
+        print(self.data)
+
+class Student(User):
     def __init__(self):
         pass
 
     def view_profile(self, ID):
-        with open("E:\GitDemo\Smart_College_Management_System\Student.json", "r") as f:
-            self.data = json.load(f)
-            for student in self.data:
-                if student["ID"] == ID :
-                    print(student)
+        try:
+            with open("Student.json", "r") as f:
+                self.data = json.load(f)
+                for student in self.data:
+                    if student["ID"] == ID :
+                        print(student)
+
+                    else:
+                        print("Student not found.")
+
+        except:
+            print("Student not found.")
         
     def view_marks(self, ID):
-        with open("E:\GitDemo\Smart_College_Management_System\Student.json", "r") as f:
-            self.data = json.load(f)
-            for student in self.data:
-                if student["ID"] == ID :
-                    print(student["Marks"])
+        try:
+            with open("Student.json", "r") as f:
+                self.data = json.load(f)
+                for student in self.data:
+                    if student["ID"] == ID :
+                        print(f"Marks : {student["Marks"]}")
 
-c1 = Authentication()
+                    else:
+                        print("Student not found.")
+
+        except:
+            print("Student not found.")
+
+c1 = User()
 while True:
     choice = input("1. Singup\n2. Login\n3. Exit\nEnter Choice :")
 
@@ -294,12 +365,23 @@ while True:
             pass
     
         while True:
-            email = input("Enter Email :")
-            if (email.endswith("@gmail.com")):
-            
+            email = input("Enter Email : ")
+
+            if ("@" in email and "." in email and email.endswith(".com")):
+                try:
+                    with open("User.json", "r") as f :
+                        data = json.load(f)
+
+                except:
+                    data = []
+                for user in data :
+                    if user["Email"] == email :
+                        print("Email already exist.\nPlease Enter another email.")
+
                 break
+
             else:
-                print("You email is incorret.\nPlease enter email again.")
+                print("Invalid Email.\nPlease enter again.")
     
         while True:
             password = input("Enter Password :")
@@ -329,9 +411,9 @@ while True:
                     break
 
                 else:
-                    print("You enter invalid role.\nPlease enter role again.")
+                    print("You entered invalid role.\nPlease enter role again.")
             except ValueError:
-                print("You enter invalid role.\nPlease enter role again.")
+                print("You entered invalid role.\nPlease enter role again.")
 
 
         c1.signup(name, email, password, role)
@@ -345,13 +427,8 @@ while True:
 
         email = input("Enter Email :")
         password = input("Enter Password :")
-        role = input("Enter Role :")
-        try:
-            role = role.title()
-        except ValueError:
-            pass
      
-        c1.login(email, password, role)
+        c1.login(email, password)
         break
 
     elif (choice == "3"):
