@@ -27,7 +27,7 @@ class User:
         if (role == "Admin"):
             
             self.ad = Admin()
-            self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Lougout\nEnter choice :")
+            self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Logout\nEnter choice :")
                 
             if (self.choice == "1"):
                 while True:
@@ -122,7 +122,7 @@ class User:
                 self.ad.all_teachers()
 
             elif (self.choice == "5"):
-                print("Lougout Successfully.")
+                print("Logout Successfully.")
                 print("Exit!")
 
             else:
@@ -132,7 +132,7 @@ class User:
         elif (role == "Teacher"):
             
             self.teac = Teacher()
-            self.choice = input("1. Add Marks\n2.View Students\n3. Lougout\nEnter Choice :")
+            self.choice = input("1. Add Marks\n2.View Students\n3. Logout\nEnter Choice :")
 
             if (self.choice == "1"):
                 ID = input("Enter ID :")
@@ -143,7 +143,7 @@ class User:
                 self.teac.view_students()
 
             elif (self.choice == "3"):
-                print("Lougout Successfully.\nExit!")
+                print("Logout Successfully.\nExit!")
 
             else:
                 print("You entered invalid option.")
@@ -173,14 +173,16 @@ class User:
         try:
             with open("User.json", "r") as f :
                 self.data = json.load(f)
+                found = False
                 for user in self.data:
                     if user["Email"] == email :
                         if user["Password"] == password :
-                            print("Login Successfullly.")
+                            found = True
+                            print("Login Successfully.")
                             if user["Role"] == "Admin" :
             
                                 self.ad = Admin()
-                                self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Lougout\nEnter choice :")
+                                self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Logout\nEnter choice :")
                 
                                 if (self.choice == "1"):
                                 
@@ -274,7 +276,7 @@ class User:
                                     self.ad.all_teachers()
 
                                 elif (self.choice == "5"):
-                                    print("Lougout Successfully.")
+                                    print("Logout Successfully.")
                                     print("Exit!")
 
                                 else:
@@ -284,7 +286,7 @@ class User:
                             elif user["Role"] == "Teacher":
             
                                 self.teac = Teacher()
-                                self.choice = input("1. Add Marks\n2.View Students\n3. Lougout\nEnter Choice :")
+                                self.choice = input("1. Add Marks\n2.View Students\n3. Logout\nEnter Choice :")
 
                                 if (self.choice == "1"):
                                     ID = input("Enter ID :")
@@ -295,7 +297,7 @@ class User:
                                     self.teac.view_students()
 
                                 elif (self.choice == "3"):
-                                    print("Lougout Successfully.\nExit!")
+                                    print("Logout Successfully.\nExit!")
 
                                 else:
                                     print("You entered invalid option.")
@@ -322,7 +324,7 @@ class User:
 
 
                     
-                else:
+                if not found :
                     print("Invalid Email or password.")
         except:
             print("Invalid Email or password.")
@@ -404,9 +406,19 @@ class Teacher(User):
         try:
             with open("Student.json", "r") as f:
                 self.data = json.load(f)
+                found = False
                 for i in self.data:
                     if i["ID"] == ID :
                         i["Marks"] = marks
+                        found = True
+                        break
+
+                if found:
+                    print("Marks added successfully.")
+
+                else:
+                    print("Student not found.")
+
 
         except:
             print("Student not found.")
@@ -448,7 +460,7 @@ class Student(User):
         try:
             with open("Student.json", "r") as f:
                 self.data = json.load(f)
-                found = True
+                found = False
                 for student in self.data:
                     if student["ID"] == ID :
                         print(f"Marks : {student['Marks']}")
@@ -463,7 +475,7 @@ class Student(User):
 
 c1 = User()
 while True:
-    choice = input("1. Singup\n2. Login\n3. Exit\nEnter Choice :")
+    choice = input("1. Signup\n2. Login\n3. Exit\nEnter Choice :")
 
     if (choice == "1"):
     
