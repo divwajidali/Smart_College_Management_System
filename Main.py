@@ -277,9 +277,107 @@ class Admin(User):
             print(f"{teacher['ID'] :<10}{teacher['Name'] :<15}{teacher['Subject'] :<20}{teacher['Salary'] :<15}")
         print("-" * 60)
         
+from datetime import date
+class Attendance(User):
+    def __init__(self):
+        pass
 
-             
+    def mark_attendance(self, ID, status) :
+        
+        today = str(date.today())
+       
+        try:
+            with open("Attendance.json", "r") as f :
+                self.data = json.load(f)
+
+        except FileNotFoundError:
+            self.data = []
+
+        found = False
+        for record in self.data:
+            if record["ID"] == ID and record["Date"] == today :
+                print("Attendance already marked.")
+                found = True
+                break
+
+        if not found:
+            attend = {
+                "ID" : ID,
+                "Date" : today,
+                "Status" : status
+                }
+            self.data.append(attend)
+            with open("Attendance.json", "w") as f:
+                json.dump(self.data, f, indent=4)
+
+            print("Attendance marked successfully.")
     
+    def view_today_attendance(self):
+        today = str(date.today())
+        try:
+            with open("Attendance.json", "r") as f:
+                self.data = json.load(f)
+
+        except FileNotFoundError:
+            print("Attendance file not found.")
+            return
+
+        found = False
+        print("-" * 50)
+        print(f"{'ID' :< 10}{'Date' :< 15}{'Status' :<15}")
+        print("-" * 50)
+        for student in self.data:
+            if student["Date"] == today :
+                print(f"{student['ID'] :<10}{student['Date'] :<10}{student.get('Status','N/A') :<15}")
+                found = True
+        print("-"*50)        
+
+        if not found:
+            print("Today record not found.")
+
+    def percentage_attendance(self,email):
+        try:
+            with open("Student.json","r") as f:
+                self.data = json.load(f)
+
+        except FileNotFoundError:
+            print("Student record not found.")
+            return
+        
+        found = False
+        for record in self.data:
+            if record["Email"] == email :
+                user_id = record["ID"]
+                found = True
+                break
+        
+        if not found:
+            print("Record not found.")
+            return
+
+        try:
+            with open("Attendance.json", "r") as f:
+                self.data = json.load(f)
+
+        except FileNotFoundError:
+            print("Attendance file not found.")
+            return
+        
+        total = 0
+        present = 0
+        for record in self.data:
+            if user_id == record["ID"] :
+                if record["Status"] == "Present" :
+                    present += 1
+                total += 1
+
+        if total != 0 :
+            percentage = (present/total) * 100
+
+        else: 
+            percentage = 0
+
+        print(f"Your percentage attendance : {percentage:.2f} %")
 
 class Teacher(User):
     def __init__(self):
@@ -288,7 +386,7 @@ class Teacher(User):
     def teacher_menu(self):
 
         while True :
-            self.choice = input("1. Add Marks\n2.View Students\n3. Search Student\n4. Logout\nEnter Choice :")
+            self.choice = input("1. Add Marks\n2.View Students\n3. Search Student\n4. Mark Attendance\n5. View Today Attendance\n6. Logout\nEnter Choice :")
 
             if (self.choice == "1"):
                 ID = input("Enter ID :")
@@ -303,6 +401,17 @@ class Teacher(User):
                 self.search_student(ID)
 
             elif (self.choice == "4"):
+                att = Attendance()
+                ID = input("Enter Student ID :")
+                status = input("Enter Student Status :")
+                att.mark_attendance(ID, status)
+
+            elif (self.choice == "5"):
+                att = Attendance()
+                att.view_today_attendance()
+
+
+            elif (self.choice == "6"):
                 print("Logout Successfully.\nExit!")
                 break
 
@@ -384,7 +493,7 @@ class Student(User):
     def student_menu(self):
         while True:
 
-            self.choice = input("1. View Profile\n2. View Marks\n3. Logout\nEnter Choice :")
+            self.choice = input("1. View Profile\n2. View Marks\n3. Percentage Attendance\n4. Logout\nEnter Choice :")
             if (self.choice == "1"):
                 self.view_profile()
 
@@ -392,6 +501,10 @@ class Student(User):
                 self.view_marks()
 
             elif (self.choice == "3"):
+                att = Attendance()
+                att.percentage_attendance(self.email)
+
+            elif (self.choice == "4"):
                 print("Logout Successfully.\nExit!")
                 break
 
