@@ -143,7 +143,7 @@ class Admin(User):
 
     def admin_menu(self):
         while True:
-            self.choice = input("1. Add Student\n2. Add Teacher\n3. All Students\n4. All Teachers\n5. Logout\nEnter choice :")
+            self.choice = input("1. Add Student\n2. Add Teacher\n3. Delete Student\n4. All Students\n5. All Teachers\n6. Logout\nEnter choice :")
                 
             if (self.choice == "1"):
                 id = check_id("Student.json", "Student")             
@@ -163,12 +163,16 @@ class Admin(User):
                 self.add_teacher(id, name, subject, salary)
 
             elif (self.choice == "3"):
-                self.all_students()
+                ID = input("Enter Student ID :")
+                self.delete_student(ID)
 
             elif (self.choice == "4"):
-                self.all_teachers()
+                self.all_students()
 
             elif (self.choice == "5"):
+                self.all_teachers()
+
+            elif (self.choice == "6"):
                 print("Logout Successfully.")
                 print("Exit!")
                 break
@@ -216,6 +220,29 @@ class Admin(User):
         self.data.append(self.teacher)    
         with open("Teacher.json", "w") as f:
             json.dump(self.data, f, indent=4)
+
+    def delete_student (self, ID):
+        try:
+            with open("Student.json", "r") as f:
+                self.data = json.load(f)
+
+        except FileNotFoundError:
+            self.data = []
+
+        found = False
+        for student in self.data:
+            if student["ID"] == ID :
+                self.data.remove(student)
+                found = True
+                break
+
+        if found :
+            with open("Student.json", "w") as f:
+                json.dump(self.data, f, indent=4)
+            print("Student delete successfully.")
+
+        else:
+            print("Student does not exist.")
 
     def all_students (self):
         try:
