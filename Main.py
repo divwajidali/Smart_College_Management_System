@@ -250,7 +250,8 @@ class Admin(User):
                 self.data = json.load(f)
 
         except FileNotFoundError:
-            self.data = "No student found."
+            print("No student found.")
+            return
 
         print("-" * 120)
 
@@ -267,7 +268,8 @@ class Admin(User):
                 self.data = json.load(f)
             
         except FileNotFoundError:
-            self.data = "No teacher found."
+            print("No teacher found.")
+            return
         print("-" * 60)
 
         print(f"{'ID' :<10}{'Name' :<15}{'Subject' :<20}{'Salary' :<15}")
@@ -324,7 +326,7 @@ class Attendance(User):
 
         found = False
         print("-" * 50)
-        print(f"{'ID' :<10}{'Date' :<15}{'Status' :<15}")
+        print(f"{'ID' :< 10}{'Date' :< 15}{'Status' :<15}")
         print("-" * 50)
         for student in self.data:
             if student["Date"] == today :
@@ -403,7 +405,14 @@ class Teacher(User):
             elif (self.choice == "4"):
                 att = Attendance()
                 ID = input("Enter Student ID :")
-                status = input("Enter Student Status :")
+                while True:
+                    status = input("Enter Status (Present/Absent) : ").title()
+
+                    if status == "Present" or status == "Absent":
+                        break
+
+                    else:
+                        print("Invalid Status.")
                 att.mark_attendance(ID, status)
 
             elif (self.choice == "5"):
@@ -475,7 +484,8 @@ class Teacher(User):
                 self.data = json.load(f)
 
         except FileNotFoundError:
-            self.data = "No student found."
+            print("No student found.")
+            return
 
         print("-" * 120)
 
