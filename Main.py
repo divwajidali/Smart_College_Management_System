@@ -288,7 +288,7 @@ class Teacher(User):
     def teacher_menu(self):
 
         while True :
-            self.choice = input("1. Add Marks\n2.View Students\n3. Logout\nEnter Choice :")
+            self.choice = input("1. Add Marks\n2.View Students\n3. Search Student\n4. Logout\nEnter Choice :")
 
             if (self.choice == "1"):
                 ID = input("Enter ID :")
@@ -299,6 +299,10 @@ class Teacher(User):
                 self.view_students()
 
             elif (self.choice == "3"):
+                ID = input("Enter Student ID :")
+                self.search_student(ID)
+
+            elif (self.choice == "4"):
                 print("Logout Successfully.\nExit!")
                 break
 
@@ -328,6 +332,34 @@ class Teacher(User):
         except FileNotFoundError:
             print("Student not found.")
 
+    def search_student (self, ID):
+        try:
+            with open("Student.json", "r") as f:
+                self.data = json.load(f)
+
+        except FileNotFoundError:
+            print("No student data found.")
+            return
+
+        found = False
+        for student in self.data:
+            if student["ID"] == ID :
+                print("-" * 120)
+
+                print(f"{'ID' :<10}{'Name' :<15}{'Age' :<10}{'Email' :<30}{'Phone' :<30}{'Course' :<15}{'Marks' :<10}")
+
+                print("-" * 120)
+                print(f"{student['ID'] :<10}{student['Name'] :<15}{student['Age'] :<10}{student['Email'] :<30}{student['Phone no'] :<30}{student['Course'] :<15}{student.get('Marks', 'N/A') :<10}")
+                print("-" * 120)
+
+                found = True
+                break
+
+        
+
+        if not found:
+            print("Student does not exist.")
+            
     def view_students (self):
         try:
             with open("Student.json", "r") as f:
