@@ -26,12 +26,12 @@ def validate_email():
             else:
                 print("Invalid Email.\nPlease enter again.")
 
-def check_id(filname, role):
+def check_id(filename, role):
     while True:
         id = input(f"Enter {role} ID :")
 
         try :
-            with open(filname, "r") as f :
+            with open(filename, "r") as f :
                 data = json.load(f)
 
         except FileNotFoundError:
