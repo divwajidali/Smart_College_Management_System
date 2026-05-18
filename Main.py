@@ -326,7 +326,7 @@ class Attendance(User):
 
         found = False
         print("-" * 50)
-        print(f"{'ID' :< 10}{'Date' :< 15}{'Status' :<15}")
+        print(f"{'ID' :<10}{'Date' :<15}{'Status' :<15}")
         print("-" * 50)
         for student in self.data:
             if student["Date"] == today :
