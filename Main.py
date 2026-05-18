@@ -325,14 +325,14 @@ class Attendance(User):
             return
 
         found = False
-        print("-" * 50)
-        print(f"{'ID' :<10}{'Date' :<15}{'Status' :<15}")
-        print("-" * 50)
+        print("-" * 40)
+        print(f"{'ID' :<10}{'Date' :<20}{'Status' :<10}")
+        print("-" * 40)
         for student in self.data:
             if student["Date"] == today :
-                print(f"{student['ID'] :<10}{student['Date'] :<10}{student.get('Status','N/A') :<15}")
+                print(f"{student['ID'] :<10}{student['Date'] :<20}{student.get('Status','N/A') :<10}")
                 found = True
-        print("-"*50)        
+        print("-"*40)        
 
         if not found:
             print("Today record not found.")
@@ -388,7 +388,7 @@ class Teacher(User):
     def teacher_menu(self):
 
         while True :
-            self.choice = input("1. Add Marks\n2.View Students\n3. Search Student\n4. Mark Attendance\n5. View Today Attendance\n6. Logout\nEnter Choice :")
+            self.choice = input("1. Add Marks\n2. View Students\n3. Search Student\n4. Mark Attendance\n5. View Today Attendance\n6. Logout\nEnter Choice :")
 
             if (self.choice == "1"):
                 ID = input("Enter ID :")
